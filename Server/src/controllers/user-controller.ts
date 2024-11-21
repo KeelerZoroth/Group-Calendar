@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { User } from '../models/user.js';
+import { Comment, Group, User } from '../models/index.js';
 
 // GET /Users
 export const getAllUsers = async (_req: Request, res: Response) => {
@@ -18,13 +18,53 @@ export const getUserById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await User.findByPk(id, {
-      attributes: { exclude: ['password'] }
+      attributes: { exclude: ['password'] },
     });
     if (user) {
       res.json(user);
     } else {
       res.status(404).json({ message: 'User not found' });
     }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// GET /users/:userId/groups
+export const getUserGroups = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  try {
+    const groups = await Group.findAll({
+      include: [
+        {
+          model: User,
+          as: 'hostUser', // Alias for the host user
+          attributes: { exclude: ['password']},
+        },
+        {
+          model: User,
+          as: 'Users',
+          attributes: [],
+          through: { attributes: [] },
+          where: { id: userId },
+        },
+      ],
+      attributes: { exclude: ['hostUserId']}
+    });
+    res.json(groups);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// GET /users/:userId/comments
+export const getUserComments = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  try {
+    const comments = await Comment.findAll({
+      where: { createdByUserId: userId },
+    });
+    res.json(comments);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
