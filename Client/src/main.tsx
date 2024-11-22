@@ -4,7 +4,7 @@ import './index.css';
 
 import App from './App.tsx';
 import ErrorPage from './pages/ErrorPage.jsx';
-import HomePage from './pages/HomePage.tsx';
+import CalendarPage from './pages/CalendarPage.tsx';
 
 const router = createBrowserRouter([
   {
@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />
+        element: <CalendarPage />
       },
     ]
   }

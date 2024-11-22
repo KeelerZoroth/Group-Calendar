@@ -1,0 +1,95 @@
+.calendar-container {
+  max-width: 1000px;
+  margin: 20px auto; /* Center the calendar horizontally */
+  padding: 10px;
+  background-color: #f9f9f9; /* Optional background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.calendar-header button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.days-of-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-bottom: 5px;
+  background-color: #dad4d4; /* Optional background */
+  padding: 10px 0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.day-label {
+  font-size: 14px;
+  color: #0a0000;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.calendar-cell {
+  padding: 1rem;
+  text-align: center;
+  background-color: #f4f4f4;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.calendar-cell.header {
+  font-weight: bold;
+  background-color: #ececec;
+}
+
+.calendar-cell.empty {
+  background-color: transparent;
+  border: none;
+}
+
+.date {
+  font-weight: bold;
+}
+
+.events {
+  flex-grow: 1;
+  overflow-y: auto; /* Allows scrolling if there are too many events */
+  width: 100%;
+}
+
+.event {
+  background-color: #6fa8dc;
+  color: white;
+  padding: 2px 4px;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  font-size: 0.8rem;
+}
+
+.event-form {
+  margin-top: 1rem;
+}
+
+.event-form input {
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.event-form button {
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+}
