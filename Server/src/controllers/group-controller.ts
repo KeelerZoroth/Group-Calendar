@@ -1,19 +1,24 @@
 import { Request, Response } from 'express';
-import { User, Group, Comment } from '../models/index.js';
+import { User, Group, Comment, GroupUsers } from '../models/index.js';
 
 
 // GET /groups
-export const getAllGroups = async (_req: Request, res: Response) => {
+export const getAllGroups = async (req: Request, res: Response) => {
   try {
+    const { groupName, hostUserId } = req.body;
+    const where: any = {};
+    if(groupName) {where.groupName = groupName}
+    if(hostUserId) {where.hostUserId = hostUserId}
     const groups = await Group.findAll({
       include: [
         {
           model: User,
           as: 'hostUser', // Alias for the host user
           attributes: { exclude: ['password']},
+          where: where
         },
       ],
-      attributes: { exclude: ['hostUserId']}
+      attributes: { exclude: ['hostUserId'] }
     });
     res.json(groups);
   } catch (error: any) {
@@ -100,6 +105,47 @@ export const getGroupComments = async (req: Request, res: Response) => {
   }
 }
 
+// GET /groups/:groupId/days
+export const getGroupDays = async (req: Request, res: Response) => {
+  try {
+    const { groupId } = req.params;
+    const { year, month, day } = req.query;
+    const where: any = { groupId: groupId };
+    if(year) {where.calendarYear = year}
+    if(month) {where.calendarMonth = month}
+    if(day) {where.calendarDay = day}
+
+    const comments = await Comment.findAll({
+      where: where,
+      include: {
+        model: User,
+        as: 'creatingUser',
+        attributes: {exclude: ['password']}
+      },
+      attributes: {exclude: ['createdByUserId']},
+    });
+
+    // this orginizes the comments to their set dates
+    const organizedByDay = comments.reduce((calendarData: {[key: string]: any[]}, comment: any) => {
+      const commentDate = `${comment.calendarMonth}/${comment.calendarDay}/${comment.calendarYear}`;
+      if (!calendarData[commentDate]) {
+        calendarData[commentDate] = [];
+      }
+      calendarData[commentDate].push({
+        id: comment.id,
+        content: comment.content,
+        groupId: comment.groupId,
+        creatingUser: comment.creatingUser,
+      });
+      return calendarData;
+    }, {});
+
+    res.json(organizedByDay);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 
 // POST /groups
 export const createGroup = async (req: Request, res: Response) => {
@@ -112,13 +158,24 @@ export const createGroup = async (req: Request, res: Response) => {
   }
 };
 
+// POST /groups/:groupId/user/:userId
+export const addUserToGroup = async (req: Request, res: Response) => {
+  const { groupId, userId } = req.params;
+  try {
+    await GroupUsers.create({ groupId: Number.parseInt(groupId), userId: Number.parseInt(userId) });
+    res.status(201).json(`User:${userId} added to group:${groupId}`);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 // PUT /groups/:id
 export const updateGroup = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { groupName, hostUserId } = req.body;
   try {
     const group = await Group.findByPk(id);
     if (group) {
+      const { groupName, hostUserId } = {...group, ...req.body};
       group.groupName = groupName;
       group.hostUserId = hostUserId;
       await group.save();
@@ -137,6 +194,11 @@ export const deleteGroup = async (req: Request, res: Response) => {
   try {
     const group = await Group.findByPk(id);
     if (group) {
+      await GroupUsers.destroy({
+        where: {
+          groupId: group.id
+        }
+      });
       await group.destroy();
       res.json({ message: 'Group deleted' });
     } else {
@@ -144,5 +206,19 @@ export const deleteGroup = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// DELETE /groups/:groupId/user/:userId
+export const removeUserFromGroup = async (req: Request, res: Response) => {
+  const { groupId, userId } = req.params;
+   
+  try {
+    await GroupUsers.destroy({
+      where: { groupId: Number.parseInt(groupId), userId: Number.parseInt(userId) }
+    });
+    res.status(201).json(`User:${userId} removed from group:${groupId}`);
+  } catch (error: any) {
+    res.status(400).json({ message: error.message });
   }
 };

@@ -2,12 +2,11 @@ import express from 'express';
 import {
   getAllUsers,
   getUserById,
-  createUser,
   updateUser,
   deleteUser,
   getUserGroups,
   getUserComments,
-} from '../../controllers/user-controller.js';
+} from '../../../controllers/user-controller.js';
 
 const router = express.Router();
 
@@ -22,9 +21,6 @@ router.get('/:userId/groups', getUserGroups);
 
 // GET /users/:id/comments
 router.get('/:userId/comments', getUserComments);
-
-// POST /users - Create a new user
-router.post('/', createUser);
 
 // PUT /users/:id - Update a user by id
 router.put('/:id', updateUser);

@@ -13,6 +13,18 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
   // Get the authorization header from the request
   const authHeader = req.headers.authorization;
 
+
+
+
+  /* THIS CODE MUST BE REMOVED BEFORE DEPLOYMENT */
+  if(process.env.ADMIN_PASS === req.query.adminKey) {
+    return next();
+  }
+  /* ------------------------------------------- */
+
+
+
+
   // Check if the authorization header is present
   if (authHeader) {
     // Extract the token from the authorization header

@@ -1,10 +1,15 @@
 import { Request, Response } from 'express';
-import { Comment, Group, User } from '../models/index.js';
+import { Comment, Group, GroupUsers, User } from '../models/index.js';
+import { Op } from 'sequelize';
 
 // GET /Users
-export const getAllUsers = async (_req: Request, res: Response) => {
+export const getAllUsers = async (req: Request, res: Response) => {
   try {
+    const { username } = req.body;
+    const where: {[key: string]: any} = {};
+    if(username) {where.username = username}
     const users = await User.findAll({
+      where: where,
       attributes: { exclude: ['password'] }
     });
     res.json(users);
@@ -74,8 +79,12 @@ export const getUserComments = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   try {
-    const newUser = await User.create({ username, password });
-    res.status(201).json(newUser);
+    if(await User.count({where: username}) > 0){
+      res.status(409).json({message: "username already exists"});
+    } else {
+      const newUser = await User.create({ username, password });
+      res.status(201).json(newUser);
+    }
   } catch (error: any) {
     res.status(400).json({ message: error.message });
   }
@@ -84,10 +93,10 @@ export const createUser = async (req: Request, res: Response) => {
 // PUT /Users/:id
 export const updateUser = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { username, password } = req.body;
   try {
     const user = await User.findByPk(id);
     if (user) {
+      const { username, password } = {...user, ...req.body};
       user.username = username;
       user.password = password;
       await user.save();
@@ -106,6 +115,23 @@ export const deleteUser = async (req: Request, res: Response) => {
   try {
     const user = await User.findByPk(id);
     if (user) {
+      
+      const allHostingGroupIds = (await Group.findAll({
+        where: {
+          hostUserId: user.id
+        },
+        attributes: ['id']
+      })).map((row) => row.id);
+      
+      await GroupUsers.destroy({
+        where: {
+          [Op.or]: [
+            { id: { [Op.in]: allHostingGroupIds } },
+            { userId: user.id }
+          ]
+        }
+      });
+
       await user.destroy();
       res.json({ message: 'User deleted' });
     } else {

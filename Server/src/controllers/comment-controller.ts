@@ -58,7 +58,7 @@ export const updateComment = async (req: Request, res: Response) => {
   try {
     const comment = await Comment.findByPk(id);
     if (comment) {
-      const { content, calendarYear, calendarMonth, calendarDay, groupId, createdByUserId } = {...Comment, ...req.body};
+      const { content, calendarYear, calendarMonth, calendarDay, groupId, createdByUserId } = {...comment, ...req.body};
       comment.content = content;
       comment.calendarYear = calendarYear;
       comment.calendarMonth = calendarMonth;
