@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 // GET /Users
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const { username } = req.body;
+    const { username } = req.query;
     const where: {[key: string]: any} = {};
     if(username) {where.username = username}
     const users = await User.findAll({

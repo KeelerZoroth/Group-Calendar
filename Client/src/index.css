@@ -70,11 +70,9 @@ main {
   color: black;
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: row;
 }
 
-tr {
+/* tr {
   border-radius: 10px;
   background-color: #000;
   color: white;
@@ -82,7 +80,7 @@ tr {
 
 tbody tr:nth-child(odd) {
   background-color: #333333;
-}
+} */
 
 /* Navbar Content */
 .nav {
@@ -243,15 +241,4 @@ tbody tr:nth-child(odd) {
 }
 
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+

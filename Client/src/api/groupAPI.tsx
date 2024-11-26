@@ -3,12 +3,14 @@ import Auth from '../utils/auth';
 // GET /groups - Get all groups
 export const retrieveAllGroups = async (groupName?: string, hostUserId?: number ) => {
   try {
-    const response = await fetch(('/api/groups'), {
+    let fetchString: string = `/api/groups?`;
+    if(groupName) {fetchString = fetchString + `groupName=${groupName}&`}
+    if(hostUserId) {fetchString = fetchString + `hostUserId=${hostUserId}&`}
+    const response = await fetch((fetchString), {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${Auth.getToken()}`
       },
-      body: JSON.stringify({groupName, hostUserId})
     });
     const data = await response.json();
 
@@ -94,13 +96,12 @@ export const retrieveGroupComments = async (groupId: number) => {
 }
 
 // GET /groups/:id/days
-export const retrieveGroupDays = async (groupId: number, query: { year: number, month: number, day: number }) => {
+export const retrieveGroupDays = async (groupId: number, query?: { year?: number, month?: number, day?: number }) => {
   try {
-    const { year, month, day } = query;
     let fetchString: string = `/api/groups/${groupId}/days?`;
-    if(year) {fetchString = fetchString + `year=${year}`}
-    if(month) {fetchString = fetchString + `month=${month}`}
-    if(day) {fetchString = fetchString + `day=${day}`}
+    if(query!.year) {fetchString = fetchString + `year=${query!.year}&`}
+    if(query!.month) {fetchString = fetchString + `month=${query!.month}&`}
+    if(query!.day) {fetchString = fetchString + `day=${query!.day}&`}
 
     const response = await fetch((fetchString), {
       headers: {

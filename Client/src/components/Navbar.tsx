@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import '../navbar.css';
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,10 +15,16 @@ const Navbar: React.FC = () => {
       <div className="navbar-title">Group Calendar</div>
       <ul className="navbar-links">
         <li>
-          <a href="/calendar">Calendar</a>
+          <Link to="/">Calendar</Link>
         </li>
         <li>
-          <a href="/new-user">New User</a>
+          <Link to="/">Create User</Link>
+        </li>
+        <li>
+          <Link to="/viewgroups">View Groups</Link>
+        </li>
+        <li>
+          <Link to="/groupinfo">Group Info</Link>
         </li>
         <li>
           <button className="navbar-button" onClick={handleLoginLogout}>

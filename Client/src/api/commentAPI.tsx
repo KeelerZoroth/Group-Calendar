@@ -47,7 +47,7 @@ export const retrieveCommentById = async (commentId: number) => {
 }
 
 // POST /comments - Create a new comment
-export const createUser = async (commentData: { content: string, calendarYear: number, calendarMonth: number, calendarDay: number, groupId: number, createdByUserId: number }) => {
+export const createComment = async (commentData: { content: string, calendarYear: number, calendarMonth: number, calendarDay: number, groupId: number, createdByUserId: number }) => {
   try {
     const response = await fetch((`/api/comments`), {
       method: 'POST',

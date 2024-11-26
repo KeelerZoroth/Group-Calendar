@@ -5,7 +5,7 @@ import { User, Group, Comment, GroupUsers } from '../models/index.js';
 // GET /groups
 export const getAllGroups = async (req: Request, res: Response) => {
   try {
-    const { groupName, hostUserId } = req.body;
+    const { groupName, hostUserId } = req.query;
     const where: any = {};
     if(groupName) {where.groupName = groupName}
     if(hostUserId) {where.hostUserId = hostUserId}
