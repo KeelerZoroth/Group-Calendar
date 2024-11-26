@@ -14,11 +14,11 @@ export const getAllGroups = async (req: Request, res: Response) => {
         {
           model: User,
           as: 'hostUser', // Alias for the host user
-          attributes: { exclude: ['password']},
-          where: where
+          attributes: { exclude: ['password'] },
         },
       ],
-      attributes: { exclude: ['hostUserId'] }
+      attributes: { exclude: ['hostUserId'] },
+      where: where
     });
     res.json(groups);
   } catch (error: any) {
@@ -36,12 +36,12 @@ export const getGroupById = async (req: Request, res: Response) => {
           {
             model: User,
             as: 'hostUser', // Alias for the host user
-            attributes: { exclude: ['password']},
+            attributes: { exclude: ['password'] },
           },
           {
             model: User,
             as: 'Users', // Alias for the associated group users
-            attributes: { exclude: ['password']},
+            attributes: { exclude: ['password'] },
             through: { attributes: [] }, // Exclude fields from the join table (GroupUsers)
           },
         ],
@@ -58,7 +58,7 @@ export const getGroupById = async (req: Request, res: Response) => {
   }
 };
 
-// GET /groups/:groupId/comments
+// GET /groups/:groupId/users
 export const getGroupUsers = async (req: Request, res: Response) => {
   const { groupId } = req.params;
   try {
@@ -71,6 +71,7 @@ export const getGroupUsers = async (req: Request, res: Response) => {
           // through: { attributes: [] }, // Exclude fields from the join table (GroupUsers)
         }
       ],
+      attributes: { exclude: ['password'] }
     });
     if (comments) {
       res.json(comments);
@@ -152,6 +153,7 @@ export const createGroup = async (req: Request, res: Response) => {
   const { groupName, hostUserId } = req.body;
   try {
     const newGroup = await Group.create({ groupName, hostUserId });
+    await GroupUsers.create({ groupId: newGroup.id, userId: hostUserId })
     res.status(201).json(newGroup);
   } catch (error: any) {
     res.status(400).json({ message: error.message });
@@ -175,10 +177,7 @@ export const updateGroup = async (req: Request, res: Response) => {
   try {
     const group = await Group.findByPk(id);
     if (group) {
-      const { groupName, hostUserId } = {...group, ...req.body};
-      group.groupName = groupName;
-      group.hostUserId = hostUserId;
-      await group.save();
+      await group.update(req.body);
       res.json(group);
     } else {
       res.status(404).json({ message: 'Group not found' });
@@ -212,7 +211,6 @@ export const deleteGroup = async (req: Request, res: Response) => {
 // DELETE /groups/:groupId/user/:userId
 export const removeUserFromGroup = async (req: Request, res: Response) => {
   const { groupId, userId } = req.params;
-   
   try {
     await GroupUsers.destroy({
       where: { groupId: Number.parseInt(groupId), userId: Number.parseInt(userId) }

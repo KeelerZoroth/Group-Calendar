@@ -3,9 +3,15 @@ import { Comment, User } from '../models/index.js';
 
 
 // GET /Comments
-export const getAllComments = async (_req: Request, res: Response) => {
+export const getAllComments = async (req: Request, res: Response) => {
   try {
+    const page: number = parseInt(req.query.page as string, 10) || 1;
+    const limit: number = parseInt(req.query.limit as string, 10) || 10;
+    const offset: number = (page - 1) * limit;
+    
     const comments = await Comment.findAll({
+      limit,
+      offset,
       include: {
         model: User,
         as: 'creatingUser',
@@ -58,14 +64,7 @@ export const updateComment = async (req: Request, res: Response) => {
   try {
     const comment = await Comment.findByPk(id);
     if (comment) {
-      const { content, calendarYear, calendarMonth, calendarDay, groupId, createdByUserId } = {...comment, ...req.body};
-      comment.content = content;
-      comment.calendarYear = calendarYear;
-      comment.calendarMonth = calendarMonth;
-      comment.calendarDay = calendarDay;
-      comment.groupId = groupId;
-      comment.createdByUserId = createdByUserId;
-      await comment.save();
+      await comment.update(req.body);
       res.json(comment);
     } else {
       res.status(404).json({ message: 'Comment not found' });

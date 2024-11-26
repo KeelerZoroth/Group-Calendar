@@ -79,7 +79,7 @@ export const getUserComments = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   const { username, password } = req.body;
   try {
-    if(await User.count({where: username}) > 0){
+    if(await User.count({where: { username } }) > 0){
       res.status(409).json({message: "username already exists"});
     } else {
       const newUser = await User.create({ username, password });
@@ -96,11 +96,8 @@ export const updateUser = async (req: Request, res: Response) => {
   try {
     const user = await User.findByPk(id);
     if (user) {
-      const { username, password } = {...user, ...req.body};
-      user.username = username;
-      user.password = password;
-      await user.save();
-      res.json(user);
+      await user.update(req.body);
+      res.status(201).json(user);
     } else {
       res.status(404).json({ message: 'User not found' });
     }
@@ -116,6 +113,12 @@ export const deleteUser = async (req: Request, res: Response) => {
     const user = await User.findByPk(id);
     if (user) {
       
+      await Comment.destroy({
+        where: {
+          createdByUserId: user.id
+        }
+      });
+
       const allHostingGroupIds = (await Group.findAll({
         where: {
           hostUserId: user.id

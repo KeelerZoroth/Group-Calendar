@@ -8,4 +8,4 @@ const router = express.Router();
 // POST /users - Create a new user
 router.post('/', createUser);
 
-export { router as userRouter };
+export { router as userRoutes };
