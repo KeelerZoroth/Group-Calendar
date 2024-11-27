@@ -4,18 +4,6 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #333;
-  background-image: url('/Users/sarahhantz/Desktop/Calendar-S/Login/my-app/src/styles/image.jpg');
-  background-size: cover; 
-  background-position: center; 
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
 
 /* login container styling */
 .login-container {
@@ -115,11 +103,6 @@ body {
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
-  .login-box {
-      height: 300px; 
-  }
-}
 
 
 /* mobile view styles */

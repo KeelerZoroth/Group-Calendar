@@ -5,7 +5,7 @@ import { User, Group, Comment, GroupUsers } from '../models/index.js';
 // GET /groups
 export const getAllGroups = async (req: Request, res: Response) => {
   try {
-    const { groupName, hostUserId } = req.body;
+    const { groupName, hostUserId } = req.query;
     const where: any = {};
     if(groupName) {where.groupName = groupName}
     if(hostUserId) {where.hostUserId = hostUserId}
@@ -128,7 +128,7 @@ export const getGroupDays = async (req: Request, res: Response) => {
 
     // this orginizes the comments to their set dates
     const organizedByDay = comments.reduce((calendarData: {[key: string]: any[]}, comment: any) => {
-      const commentDate = `${comment.calendarMonth}/${comment.calendarDay}/${comment.calendarYear}`;
+      const commentDate = `${comment.calendarYear}-${comment.calendarMonth.toString().padStart(2, '0')}-${comment.calendarDay.toString().padStart(2, '0')}`;
       if (!calendarData[commentDate]) {
         calendarData[commentDate] = [];
       }

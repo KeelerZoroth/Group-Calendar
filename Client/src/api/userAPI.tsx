@@ -1,16 +1,19 @@
+import { CommentData } from '../interfaces/CommentData';
+import { GroupData } from '../interfaces/GroupData';
 import { UserData } from '../interfaces/UserData';
 import { UserLogin } from '../interfaces/UserLogin';
 import Auth from '../utils/auth';
 
 // GET /users - Get all users
-export const retrieveAllUsers = async (username: string) => {
+export const retrieveAllUsers = async (username?: string): Promise<UserData[]> => {
   try {
-    const response = await fetch(('/api/users'), {
+    let fetchString: string = `/api/users?`;
+    if(username) {fetchString = fetchString + `username=${username}`}
+    const response = await fetch((fetchString), {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${Auth.getToken()}`
       },
-      body: JSON.stringify({username})
     });
     const data = await response.json();
 
@@ -27,7 +30,7 @@ export const retrieveAllUsers = async (username: string) => {
 }
 
 // GET /users/:id - Get a user by id
-export const retrieveUserById = async (userId: number) => {
+export const retrieveUserById = async (userId: number): Promise<UserData> => {
   try {
     const response = await fetch((`/api/users/${userId}`), {
       headers: {
@@ -45,12 +48,12 @@ export const retrieveUserById = async (userId: number) => {
 
   } catch (err) { 
     console.log('Error from data retrieval:', err);
-    return [];
+    return {} as UserData;
   }
 }
 
 // GET /users/:id/groups
-export const retrieveUserGroups = async (userId: number) => {
+export const retrieveUserGroups = async (userId: number): Promise<GroupData[]> => {
   try {
     const response = await fetch((`/api/users/${userId}/groups`), {
       headers: {
@@ -73,7 +76,7 @@ export const retrieveUserGroups = async (userId: number) => {
 }
 
 // GET /users/:id/comments
-export const retrieveUserComments = async (userId: number) => {
+export const retrieveUserComments = async (userId: number): Promise<CommentData[]> => {
   try {
     const response = await fetch((`/api/users/${userId}/comments`), {
       headers: {
