@@ -1,0 +1,176 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #333;
+  background-image: url('/Users/sarahhantz/Desktop/Calendar-S/Login/my-app/src/styles/image.jpg');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* login container styling */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.login-box {
+  background-color: rgba(255, 255, 255, 0.2); /* transparent background */
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+  backdrop-filter: blur(5px); /* blur effect */
+  border: 2px solid white; 
+}
+
+.login-box h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: #fff; 
+}
+/* input group styling */
+.input-group {
+  margin-bottom: 1.5rem;
+  position: relative; /* Necessary for icon positioning */
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.8rem 2.5rem 0.8rem 0.8rem; /* Add padding to the right for the icon */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white; 
+  font-size: 1rem;
+}
+
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.input-group input:focus {
+  outline: none;
+}
+
+/* Icon styling */
+.input-icon {
+  position: absolute;
+  right: 10px; /* Move icon to the right side */
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  width: 20px;
+  height: 20px;
+}
+
+/* button styling */
+.login-button {
+  width: 100%;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  background-color: #fbfbfb;
+  color: rgb(0, 0, 0);
+}
+
+.login-button:hover {
+  background-color: #000000;
+  color: #fbfbfb;
+}
+
+/* register text styling */
+.register-text {
+  margin-top: 1rem;
+  color: white; 
+  font-size: 0.9rem;
+  text-align: center;
+  
+}
+
+.register-text strong {
+  font-weight: bold;
+  cursor: pointer; 
+  color: #ffffff; 
+}
+
+.register-text strong:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .login-box {
+      height: 300px; 
+  }
+}
+
+
+/* mobile view styles */
+@media (max-width: 768px) {
+  body {
+      background-position: top center;
+      background-size: cover;
+  }
+
+  .login-box {
+      width: 90%; 
+      padding: 2rem; 
+  }
+
+  .login-box h2 {
+      font-size: 1.2rem; 
+  }
+
+  .input-group input {
+      padding: 0.7rem;
+      font-size: 0.9rem;
+  }
+
+  .login-button {
+      padding: 0.7rem;
+  }
+
+  .register-text {
+      font-size: 0.8rem; 
+  }
+}
+
+@media (max-width: 480px) {
+  .login-box {
+      width: 95%; 
+      padding: 1.5rem;
+  }
+
+  .login-box h2 {
+      font-size: 1.1rem;
+  }
+
+  .input-group input {
+      padding: 0.6rem; 
+      font-size: 0.85rem;
+  }
+
+  .login-button {
+      padding: 0.6rem; 
+  }
+}
+
+
+
