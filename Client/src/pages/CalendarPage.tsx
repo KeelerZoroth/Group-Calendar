@@ -1,80 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../calendar.css';
+import UserContext from '../components/UserContext';
+import { retrieveGroupDays } from '../api/groupAPI';
+import { Link } from 'react-router-dom';
 
-interface Event {
-  id: number;
-  date: string; // ISO date string (e.g., '2024-11-19')
-  title: string;
-}
 
-const eventsData: Event[] = [
-  { id: 1, date: '2024-11-19', title: 'Birthday' },
-  { id: 2, date: '2024-11-25', title: 'Meeting' },
-  { id: 3, date: '2024-11-30', title: 'Conference' },
-];
 const Calendar: React.FC = () => {
   const today = new Date();
-  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+  const [currentMonth, setCurrentMonth] = useState( 0 /*today.getMonth()*/);
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [events, setEvents] = useState<Event[]>([]);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [newEventTitle, setNewEventTitle] = useState<string>('');
-  
+  const [numOfComments, setNumOfComments] = useState<{[key: string]: number}>({});
+  const { currentGroup } = useContext(UserContext);
+
+
+
+
+
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   useEffect(() => {
-    fetchEvents();
-  }, []);
+    fetchNumOfComments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentGroup]);
 
-  const fetchEvents = async () => {
+  console.log(numOfComments);
+  const blankDays: {[key: string]: number} = {};
+  const fetchNumOfComments = async () => {
     try {
-      // const response = await fetch('http://localhost:3000/api/events');
-      // const data = await response.json();
-      // setEvents(data);
-      setEvents(eventsData); //delete later
+      if(currentGroup){
+        const response = await retrieveGroupDays(currentGroup.id as number);
+        Object.keys(response).forEach((dateKey) => {
+          blankDays[dateKey] = response[dateKey].length
+        });
+      }
+      setNumOfComments(blankDays);
     } catch (error) {
-      console.error('Error gathering events:', error);
+      console.error('Error gathering comments:', error);
     }
   };
 
-  const handleAddEvent = async () => {
-    if (selectedDate && newEventTitle.trim()) {
-      const newEvent = { date: selectedDate, title: newEventTitle.trim()} as Event;
-      newEvent.id = Date.now();//delete later
-      setEvents([...events, newEvent]);//delete later
-      // try {
-      //   const response = await fetch('http://localhost:3000/api/events', {
-      //     method: 'POST',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify(newEvent),
-      //   });
-
-      //   if (response.ok) {
-      //     const addedEvent = await response.json();
-      //     setEvents([...events, addedEvent]);
-      //     setNewEventTitle('');
-      //     setSelectedDate(null);
-      //   }
-      // } catch (error) {
-      //   console.error('Error adding event:', error);
-      // }
-    }
-  };
-
-  const handleDeleteEvent = async (id: number) => {
-    setEvents(events.filter((event) => event.id !== id));//delete later
-    // try {
-    //   const response = await fetch(`http://localhost:3000/api/events/${id}`, {
-    //     method: 'DELETE',
-    //   });
-
-    //   if (response.ok) {
-    //     setEvents(events.filter((event) => event.id !== id));
-    //   }
-    // } catch (error) {
-    //   console.error('Error deleting event:', error);
-    // }
-  };
+ 
 
   const renderDaysOfWeek = () => {
     // Render a row of days of the week
@@ -102,25 +67,17 @@ const Calendar: React.FC = () => {
 
     while (dayCounter <= daysInMonth) {
       const date = new Date(currentYear, currentMonth, dayCounter).toISOString().split('T')[0];
-      const dayEvents = events.filter((event) => event.date === date);
       calendarDays.push(
-        <div className="calendar-cell" key={`day-${dayCounter}`} onClick={() => setSelectedDate(date)}>
-          <span className="date">{dayCounter}</span>
-          <div className="events">
-            {dayEvents.map((event) => (
-              <div
-                key={event.id}
-                className="event"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteEvent(event.id);
-                }}
-              >
-                {event.title} (x)
-              </div>
-            ))}
-          </div>
-        </div>
+          <Link to={'/modifydate'} className="calendar-cell" key={`day-${dayCounter}`}>
+
+            <span className="date">{dayCounter}</span>
+            {numOfComments[date] && 
+                <div className="event">
+                  {`${numOfComments[date]}`}
+                </div>
+            }
+          </Link>
+        
       );
       dayCounter++;
     }
@@ -162,19 +119,6 @@ const Calendar: React.FC = () => {
       </div>
       {renderDaysOfWeek()}
       <div className="calendar-grid">{renderCalendar()}</div>
-      {selectedDate && (
-        <div className="event-form">
-          <h3>Add Event for {selectedDate}</h3>
-          <input
-            type="text"
-            value={newEventTitle}
-            onChange={(e) => setNewEventTitle(e.target.value)}
-            placeholder="Event Title"
-          />
-          <button onClick={handleAddEvent}>Add Event</button>
-          <button onClick={() => setSelectedDate(null)}>Cancel</button>
-        </div>
-      )}
     </div>
   );
 };

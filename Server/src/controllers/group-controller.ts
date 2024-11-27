@@ -128,7 +128,7 @@ export const getGroupDays = async (req: Request, res: Response) => {
 
     // this orginizes the comments to their set dates
     const organizedByDay = comments.reduce((calendarData: {[key: string]: any[]}, comment: any) => {
-      const commentDate = `${comment.calendarMonth}/${comment.calendarDay}/${comment.calendarYear}`;
+      const commentDate = `${comment.calendarYear}-${comment.calendarMonth.toString().padStart(2, '0')}-${comment.calendarDay.toString().padStart(2, '0')}`;
       if (!calendarData[commentDate]) {
         calendarData[commentDate] = [];
       }

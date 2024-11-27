@@ -8,16 +8,10 @@ import { createGroup } from "../api/groupAPI";
 
 const ViewGroupsPage = () => {
     const [userGroups, setUserGroups] = useState<GroupData[]>([]);
-    const { currentGroup, updateCurrentGroup } = useContext(UserContext);
+    const { currentGroup, updateCurrentGroup, currentUser } = useContext(UserContext);
     const [inputData, setInputData] = useState({
         newGroupName: '',
     });
-
-
-
-    const aUserId = 1;
-
-
 
 
 
@@ -30,7 +24,9 @@ const ViewGroupsPage = () => {
     };
     
     const updateUserGroups = async () => {
-        setUserGroups(await retrieveUserGroups(aUserId));
+        if(currentUser.id){
+            setUserGroups(await retrieveUserGroups(currentUser.id as number));
+        }
     }
     
     
@@ -44,7 +40,8 @@ const ViewGroupsPage = () => {
 
     useEffect(() => {
         updateUserGroups()
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentUser]);
 
 
     const styles: {[key: string]: React.CSSProperties} = {
@@ -104,7 +101,7 @@ const ViewGroupsPage = () => {
                 />
                 <button onClick={
                     () => {
-                        createNewGroup(inputData.newGroupName, aUserId);
+                        createNewGroup(inputData.newGroupName, currentUser!.id!);
                     }
                 }>Create Group</button>
             </div>

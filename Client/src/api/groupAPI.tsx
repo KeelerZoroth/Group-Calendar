@@ -99,9 +99,11 @@ export const retrieveGroupComments = async (groupId: number) => {
 export const retrieveGroupDays = async (groupId: number, query?: { year?: number, month?: number, day?: number }) => {
   try {
     let fetchString: string = `/api/groups/${groupId}/days?`;
-    if(query!.year) {fetchString = fetchString + `year=${query!.year}&`}
-    if(query!.month) {fetchString = fetchString + `month=${query!.month}&`}
-    if(query!.day) {fetchString = fetchString + `day=${query!.day}&`}
+    if(query){
+      if(query!.year) {fetchString = fetchString + `year=${query!.year}&`}
+      if(query!.month) {fetchString = fetchString + `month=${query!.month}&`}
+      if(query!.day) {fetchString = fetchString + `day=${query!.day}&`}
+    }
 
     const response = await fetch((fetchString), {
       headers: {

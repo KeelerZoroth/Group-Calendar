@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const GroupInfoPage = () => {
-    const {currentGroup, updateCurrentGroup} = useContext(UserContext);
+    const {currentGroup, updateCurrentGroup, currentUser} = useContext(UserContext);
     const [groupUsers, setGroupUsers] = useState<UserData[]>([]);
     const [inviteAlert, setInviteAlert] = useState('');
     const [inputData, setInputData] = useState({
@@ -16,9 +16,6 @@ const GroupInfoPage = () => {
     });
     const navigate = useNavigate();
 
-
-    
-    const someHostUserId = 2;
 
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -99,7 +96,7 @@ const GroupInfoPage = () => {
 
     return (
         <div style={styles.mainDiv}>
-            {currentGroup?.hostUser?.id === someHostUserId && (<div style={styles.subDiv}>
+            {currentGroup?.hostUser?.id === currentUser.id && (<div style={styles.subDiv}>
                 <div>
                     <input 
                     type='text'
@@ -132,7 +129,7 @@ const GroupInfoPage = () => {
                             return (
                                 <div key={indexKey}>
                                     <p>{nextUser.username}</p>
-                                    {currentGroup?.hostUser?.id === someHostUserId && (<button onClick={() => {
+                                    {currentGroup?.hostUser?.id === currentUser.id && (<button onClick={() => {
                                         kickUser(currentGroup.id!, nextUser.id!);
                                     }}>Remove User</button>)}
                                 </div>
