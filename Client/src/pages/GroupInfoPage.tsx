@@ -4,7 +4,8 @@ import { UserData } from "../interfaces/UserData";
 import { addUserToGroup, deleteGroup, removeUserFromGroup, retrieveGroupUsers } from "../api/groupAPI";
 import { retrieveAllUsers } from "../api/userAPI";
 import { useNavigate } from "react-router-dom";
-// import AuthServices from "../utils/auth.js";
+import auth from "../utils/auth";
+import LoggedOutCard from "../components/LoggedOutCard";
 
 
 const GroupInfoPage = () => {
@@ -28,7 +29,9 @@ const GroupInfoPage = () => {
 
 
     const updateGroupUsers = async () => {
-        setGroupUsers(await retrieveGroupUsers(currentGroup?.id as number));
+        if(currentGroup){
+            setGroupUsers(await retrieveGroupUsers(currentGroup.id as number));
+        }
     }
     
 
@@ -39,7 +42,7 @@ const GroupInfoPage = () => {
 
     const deleteCurrentGroup = () => {
         deleteGroup(currentGroup?.id as number);
-        navigate("/");
+        navigate("/viewgroups");
         updateCurrentGroup(null);
     };
 
@@ -64,7 +67,7 @@ const GroupInfoPage = () => {
 
     
     useEffect(() => {
-        if(currentGroup !== null){
+        if(currentGroup){
             updateGroupUsers();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,6 +98,8 @@ const GroupInfoPage = () => {
 
 
     return (
+        <>
+        {auth.loggedIn() ?
         <div style={styles.mainDiv}>
             {currentGroup?.hostUser?.id === currentUser.id && (<div style={styles.subDiv}>
                 <div>
@@ -122,6 +127,12 @@ const GroupInfoPage = () => {
             <h2>Group Info</h2>
             {currentGroup ? 
             (
+                <>
+                {currentUser.username !== currentGroup?.hostUser?.username && (<button onClick={() => {
+                    kickUser(currentGroup.id!, currentUser.id!);
+                    updateCurrentGroup(null);
+                    navigate("/viewgroups");
+                }}>Leave Group</button>)}
                 <div>
                     <h3>Host: {currentGroup?.hostUser?.username}</h3>
                     {groupUsers.map((nextUser, indexKey) => {
@@ -138,9 +149,14 @@ const GroupInfoPage = () => {
                             return
                         }
                     })}
-                </div>) 
+                </div>
+                </>) 
             : (<p>You have no group selected.</p>)}
         </div>
+        :
+        <LoggedOutCard/>
+        }
+        </>
     )
 }
 

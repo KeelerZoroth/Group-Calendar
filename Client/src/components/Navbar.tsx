@@ -1,34 +1,48 @@
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import '../navbar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import auth from '../utils/auth';
 
 const Navbar: React.FC = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
 
   const handleLoginLogout = () => {
-    setIsLoggedIn(!isLoggedIn);
+    if(auth.loggedIn()){
+      auth.logout();
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-title">Group Calendar</div>
       <ul className="navbar-links">
-        <li>
-          <Link to="/">Calendar</Link>
-        </li>
-        <li>
-          <Link to="/">Create User</Link>
-        </li>
-        <li>
-          <Link to="/viewgroups">View Groups</Link>
-        </li>
-        <li>
-          <Link to="/groupinfo">Group Info</Link>
-        </li>
+        <Link to="/">
+          <li>
+            Calendar
+          </li>
+        </Link> 
+        <Link to="/register">
+          <li>
+            Create New User
+          </li>
+        </Link>
+        <Link to="/viewgroups">
+          <li>
+            View Groups
+          </li>
+        </Link>
+        <Link to="/groupinfo">
+          <li>
+            Group Info
+          </li>
+        </Link>
         <li>
           <button className="navbar-button" onClick={handleLoginLogout}>
-            {isLoggedIn ? 'Logout' : 'Login'}
+            {auth.loggedIn() !== '' ? 'Logout' : 'Login'}
           </button>
         </li>
       </ul>

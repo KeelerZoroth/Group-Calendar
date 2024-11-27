@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
-import './index.css'; 
+import React, { useContext, useState } from 'react';
+import './styles/login.css'; 
 import { User, Lock } from 'react-feather'; // Import icons
+import auth from "../utils/auth";
+import { login } from '../api/authAPI';
+import { retrieveAllUsers } from '../api/userAPI';
+import UserContext from '../components/UserContext';
+import { Link } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
-    const [email, setEmail] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const [showErrorP, setShowErrorP] = useState<boolean>(false);
+    const { updateCurrentUser } = useContext(UserContext);
 
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        try{
+            const responce = (await login({username, password}));
 
-        // Simulate a login API call
-        try {
-            // Replace this with your actual login logic
-            if (email === 'test@example.com' && password === 'password') {
-                console.log('Login successful!');
-            } else {
-                throw new Error('Invalid credentials');
-            }
-        } catch (err: any) {
-            // Handle error (e.g., setError)
+            auth.login(responce.token)
+            updateCurrentUser((await retrieveAllUsers((auth.getProfile() as {username: string}).username))[0])
+        } catch {
+            setShowErrorP(true);
         }
     };
 
@@ -29,10 +32,10 @@ const LoginPage: React.FC = () => {
                 <form onSubmit={handleFormSubmit}>
                     <div className="input-group">
                         <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="username"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             placeholder="Username"
                             required
                         />
@@ -51,8 +54,9 @@ const LoginPage: React.FC = () => {
                     </div>
                     <button type="submit" className="login-button">Login</button>
                 </form>
+                {showErrorP && (<p style={{color: "rgb(180, 0, 0)"}}>Incorect username or password</p>)}
                 <div className="register-text">
-                    <span>Don't have an account? <strong>Register</strong></span>
+                    <span>Don't have an account? <Link to={"/register"}><strong>Register</strong></Link></span>
                 </div>
             </div>
         </div>

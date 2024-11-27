@@ -4,6 +4,8 @@ import { GroupData } from "../interfaces/GroupData";
 import GroupCard from "../components/GroupCard";
 import UserContext from "../components/UserContext";
 import { createGroup } from "../api/groupAPI";
+import auth from "../utils/auth";
+import LoggedOutCard from "../components/LoggedOutCard";
 
 
 const ViewGroupsPage = () => {
@@ -31,7 +33,7 @@ const ViewGroupsPage = () => {
     
     
     const createNewGroup = async (groupName: string, hostUserId: number) => {
-        await createGroup({groupName, hostUserId});
+        console.log(await createGroup({groupName, hostUserId}));
         await updateUserGroups()
     }
 
@@ -91,6 +93,8 @@ const ViewGroupsPage = () => {
     };
     
     return (
+        <>
+        {auth.loggedIn() ?
         <div style={styles.mainDiv}>
             <div>
                 <input 
@@ -128,6 +132,10 @@ const ViewGroupsPage = () => {
                 })}
             </div>
         </div>
+        :
+        <LoggedOutCard />
+        }
+        </>
     )
 }
 

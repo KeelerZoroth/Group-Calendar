@@ -83,7 +83,12 @@ export const createUser = async (req: Request, res: Response) => {
       res.status(409).json({message: "username already exists"});
     } else {
       const newUser = await User.create({ username, password });
-      res.status(201).json(newUser);
+      res.status(201).json({
+        id: newUser.id,
+        username: newUser.username,
+        updatedAt: newUser.updatedAt,
+        createdAt: newUser.createdAt,
+      });
     }
   } catch (error: any) {
     res.status(400).json({ message: error.message });

@@ -3,11 +3,13 @@ import '../calendar.css';
 import UserContext from '../components/UserContext';
 import { retrieveGroupDays } from '../api/groupAPI';
 import { Link } from 'react-router-dom';
+import Auth from "../utils/auth.js";
+import LoggedOutCard from '../components/LoggedOutCard.js';
 
 
 const Calendar: React.FC = () => {
   const today = new Date();
-  const [currentMonth, setCurrentMonth] = useState( 0 /*today.getMonth()*/);
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [numOfComments, setNumOfComments] = useState<{[key: string]: number}>({});
   const { currentGroup } = useContext(UserContext);
@@ -23,7 +25,6 @@ const Calendar: React.FC = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentGroup]);
 
-  console.log(numOfComments);
   const blankDays: {[key: string]: number} = {};
   const fetchNumOfComments = async () => {
     try {
@@ -39,7 +40,6 @@ const Calendar: React.FC = () => {
     }
   };
 
- 
 
   const renderDaysOfWeek = () => {
     // Render a row of days of the week
@@ -86,40 +86,53 @@ const Calendar: React.FC = () => {
   };
 
   return (
-    <div className="calendar-container">
+
+    <>
+    {Auth.loggedIn() !== '' ?
+    (<div className="calendar-container">
+      {currentGroup ? 
+      <div>
       <div className="calendar-header">
       <button
-  onClick={() => {
-    if (currentMonth === 0) {
-      setCurrentMonth(11); // December
-      setCurrentYear((prevYear) => prevYear - 1); // Go to the previous year
-    } else {
-      setCurrentMonth(currentMonth - 1);
-    }
-  }}
->
-  &lt;
-</button>
-<h2>
-  {new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} {currentYear}
-</h2>
-<button
-  onClick={() => {
-    if (currentMonth === 11) {
-      setCurrentMonth(0); // January
-      setCurrentYear((prevYear) => prevYear + 1); // Go to the next year
-    } else {
-      setCurrentMonth(currentMonth + 1);
-    }
-  }}
->
-  &gt;
-</button>
+         onClick={() => {
+          if (currentMonth === 0) {
+           setCurrentMonth(11); // December
+            setCurrentYear((prevYear) => prevYear - 1); // Go to the previous year
+          } else {
+            setCurrentMonth(currentMonth - 1);
+          }
+        }}>
+        &lt;
+      </button>
+      <h2>
+        {new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} {currentYear}
+      </h2>
+      <button
+        onClick={() => {
+          if (currentMonth === 11) {
+            setCurrentMonth(0); // January
+            setCurrentYear((prevYear) => prevYear + 1); // Go to the next year
+          } else {
+            setCurrentMonth(currentMonth + 1);
+          }
+        }}>
+        &gt;
+      </button>
 
       </div>
-      {renderDaysOfWeek()}
+        {renderDaysOfWeek()}
       <div className="calendar-grid">{renderCalendar()}</div>
-    </div>
+      </div>
+       : 
+       <div>
+        <h2>No Group Selected</h2>
+       </div>
+       }
+    </div>)
+    :
+    <LoggedOutCard />
+    }
+    </>
   );
 };
 

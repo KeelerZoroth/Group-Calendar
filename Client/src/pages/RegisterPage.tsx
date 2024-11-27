@@ -1,22 +1,35 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { User, Lock } from 'react-feather';
-import './index.css'; 
+import './styles/register.css'; 
+import { Link } from 'react-router-dom';
+import auth from '../utils/auth';
+import UserContext from '../components/UserContext';
+import { login } from '../api/authAPI';
+import { createUser, retrieveAllUsers } from '../api/userAPI';
 
 const RegisterPage: React.FC = () => {
-    const [email, setEmail] = useState<string>('');
+    const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [errorPText, setErrorPText] = useState<string>("");
+    const { updateCurrentUser } = useContext(UserContext);
 
     const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        if(password === confirmPassword){
+            const newUser = await createUser({username, password});
 
-        try {
-            if (password !== confirmPassword) {
-                throw new Error('Passwords do not match');
+            if(newUser.username){
+                console.log();
+                const responce = (await login({username, password}));
+                
+                auth.login(responce.token)
+                updateCurrentUser((await retrieveAllUsers((auth.getProfile() as {username: string}).username))[0])
+            } else {
+                setErrorPText("username is already taken");
             }
-            console.log('Registration successful!');
-        } catch (err: any) {
-            console.error(err.message);
+        } else {
+            setErrorPText("The passwords are not equel, please try agian");
         }
     };
 
@@ -28,10 +41,10 @@ const RegisterPage: React.FC = () => {
                     <div className="input-group">
                         <User className="input-icon" />
                         <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            type="username"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             placeholder="Username"
                             required
                         />
@@ -60,8 +73,9 @@ const RegisterPage: React.FC = () => {
                     </div>
                     <button type="submit" className="register-button">Register</button>
                 </form>
+                {errorPText && (<p style={{color: "rgb(180, 0, 0)"}}>{errorPText}</p>)}
                 <div className="login-text">
-                    <span>Already have an account? <strong>Login</strong></span>
+                    <span>Already have an account? <Link to={"/login"}><strong>Login</strong></Link></span>
                 </div>
             </div>
         </div>
