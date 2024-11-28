@@ -1,21 +1,46 @@
 import React, { useState, useEffect, useContext } from 'react';
-import '../calendar.css';
 import UserContext from '../components/UserContext';
 import { retrieveGroupDays } from '../api/groupAPI';
-import { Link } from 'react-router-dom';
-import Auth from "../utils/auth.js";
 import LoggedOutCard from '../components/LoggedOutCard.js';
+import Auth from "../utils/auth.js";
 
+import CommentCard from '../components/CommentCard.js';
+
+import { CommentData } from '../interfaces/CommentData.js';
+import { createComment } from '../api/commentAPI.js';
 
 const Calendar: React.FC = () => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [numOfComments, setNumOfComments] = useState<{[key: string]: number}>({});
-  const { currentGroup } = useContext(UserContext);
+  const { currentGroup, currentUser } = useContext(UserContext);
+  
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [dateComments, setDateComments] = useState<CommentData[]>([]);
+  const [commentInputContent, setCommentInputContent] = useState<string>('')
 
 
 
+  const updateDateComments = async () => {
+    try {
+      if(currentGroup && selectedDate){
+        const response = await retrieveGroupDays(currentGroup.id as number, {year: currentYear, month: currentMonth + 1});
+        if(response[selectedDate]){
+          setDateComments(response[selectedDate]);
+        } else {
+          setDateComments([]);
+        }
+      }
+    } catch (error) {
+      console.error('Error gathering comments:', error);
+    }
+  }
+
+  const createNewComment = async ({content, calendarDay, calendarMonth, calendarYear, groupId, createdByUserId}: {content: string, calendarDay: number, calendarMonth: number, calendarYear: number, groupId: number, createdByUserId: number}) => {
+    console.log(await createComment({content, calendarDay, calendarMonth, calendarYear, groupId, createdByUserId}))
+    updateDateComments()
+  };
 
 
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -23,9 +48,17 @@ const Calendar: React.FC = () => {
   useEffect(() => {
     fetchNumOfComments();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentGroup]);
+  }, [currentGroup, dateComments]);
+
+
+  useEffect(() => {
+    updateDateComments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate])
+
 
   const blankDays: {[key: string]: number} = {};
+
   const fetchNumOfComments = async () => {
     try {
       if(currentGroup){
@@ -68,22 +101,81 @@ const Calendar: React.FC = () => {
     while (dayCounter <= daysInMonth) {
       const date = new Date(currentYear, currentMonth, dayCounter).toISOString().split('T')[0];
       calendarDays.push(
-          <Link to={'/modifydate'} className="calendar-cell" key={`day-${dayCounter}`}>
+          <div onClick={() => {
+            setSelectedDate(date)
+          }} className="calendar-cell" key={`day-${dayCounter}`}>
 
             <span className="date">{dayCounter}</span>
             {numOfComments[date] && 
-                <div className="event">
+                <div className="events">
                   {`${numOfComments[date]}`}
                 </div>
             }
-          </Link>
+          </div>
         
       );
       dayCounter++;
     }
-
     return calendarDays;
   };
+
+
+  const renderDateInfo = () => {
+
+    return (
+      <div className='date-info-container'>
+        <button className='date-info-back-btn' onClick={() => {
+            setSelectedDate(null)
+          }}>
+          {"< Back"}
+        </button>
+        <div className="date-info-header">
+          <h2>
+            {`${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} 
+            ${parseInt(selectedDate?.split('-')[2] as string)},
+            ${currentYear}`}
+          </h2>
+        </div>
+        <div  className="date-info-create-comment">
+          <input
+              type="text"
+              id="comment"
+              value={commentInputContent}
+              onChange={(e) => setCommentInputContent(e.target.value)}
+              placeholder="New Comment"
+              required
+          />
+          <button onClick={
+            () => {
+              const newCommentData = {
+                content: commentInputContent,
+                calendarDay: parseInt(selectedDate?.split('-')[2] as string),
+                calendarMonth: currentMonth + 1, 
+                calendarYear: currentYear, 
+                groupId: currentGroup!.id  as number, 
+                createdByUserId: currentUser.id as number
+              }
+              createNewComment(newCommentData);
+              setCommentInputContent('');
+          }}>
+            Create
+          </button>
+        </div>
+        <div>
+            {
+            dateComments.map((nextComment, keyIndex) => {
+              return (
+                <CommentCard comment={nextComment} updateCommentsFunc={updateDateComments} key={keyIndex}/>
+                )
+            })}
+        </div>
+
+      </div>
+    )
+  }
+
+
+
 
   return (
 
@@ -91,38 +183,45 @@ const Calendar: React.FC = () => {
     {Auth.loggedIn() !== '' ?
     (<div className="calendar-container">
       {currentGroup ? 
-      <div>
-      <div className="calendar-header">
-      <button
-         onClick={() => {
-          if (currentMonth === 0) {
-           setCurrentMonth(11); // December
-            setCurrentYear((prevYear) => prevYear - 1); // Go to the previous year
-          } else {
-            setCurrentMonth(currentMonth - 1);
-          }
-        }}>
-        &lt;
-      </button>
-      <h2>
-        {new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} {currentYear}
-      </h2>
-      <button
-        onClick={() => {
-          if (currentMonth === 11) {
-            setCurrentMonth(0); // January
-            setCurrentYear((prevYear) => prevYear + 1); // Go to the next year
-          } else {
-            setCurrentMonth(currentMonth + 1);
-          }
-        }}>
-        &gt;
-      </button>
+      
+      <>
+        { selectedDate === null ?
+        <div>
+          <div className="calendar-header">
+          <button
+            onClick={() => {
+              if (currentMonth === 0) {
+              setCurrentMonth(11); // December
+                setCurrentYear((prevYear) => prevYear - 1); // Go to the previous year
+              } else {
+                setCurrentMonth(currentMonth - 1);
+              }
+            }}>
+            &lt;
+          </button>
+          <h2>
+            {new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} {currentYear}
+          </h2>
+          <button
+            onClick={() => {
+              if (currentMonth === 11) {
+                setCurrentMonth(0); // January
+                setCurrentYear((prevYear) => prevYear + 1); // Go to the next year
+              } else {
+                setCurrentMonth(currentMonth + 1);
+              }
+            }}>
+            &gt;
+          </button>
 
-      </div>
-        {renderDaysOfWeek()}
-      <div className="calendar-grid">{renderCalendar()}</div>
-      </div>
+          </div>
+            {renderDaysOfWeek()}
+          <div className="calendar-grid">{renderCalendar()}</div>
+        </div>
+        :
+        <>{renderDateInfo()}</>
+        }
+        </>
        : 
        <div>
         <h2>No Group Selected</h2>

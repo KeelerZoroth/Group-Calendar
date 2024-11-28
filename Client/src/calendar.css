@@ -1,3 +1,6 @@
+
+
+/* Styles for monthly calendar */
 .calendar-container {
   display: flex;
   justify-content: center;
@@ -68,6 +71,9 @@
   border: 1px solid #ddd;
   cursor: pointer;
 }
+.calendar-cell:hover {
+  color: #535bf2;
+}
 
 .calendar-cell.header {
   font-weight: bold;
@@ -77,6 +83,7 @@
 .calendar-cell.empty {
   background-color: transparent;
   border: none;
+  cursor: auto;
 }
 
 .date {
@@ -84,7 +91,7 @@
 }
 
 
-.event {
+.events {
   position: absolute;
   bottom: 0%;
   right: 0;
@@ -94,3 +101,56 @@
   padding: 2px 4px;
   font-size: 0.7rem;
 }
+
+
+
+/* Styles for date info */
+
+
+.date-info-header {
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
+  font-size: 1.5em;
+}
+
+.date-info-back-btn {
+  position: relative;
+  margin-right: 80%;
+}
+
+
+ .date-info-comment-card-container {
+    width: 70%;
+    margin: 8px auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+
+.date-info-comment-card {
+  width: 90%;
+  position: relative;
+  background-color: #6fa8dc;
+  padding: 0.8em;
+  padding-bottom: 1.1em;
+}
+
+.date-info-comment-card > .creating-user {
+  color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  margin: 3px 5px;
+  left: 0%;
+  bottom: 0%;
+  font-size: 0.7em;
+}
+
+.date-info-comment-delete-btn {
+  width: 10%;
+  border-radius: 0;
+  padding: 0;
+}
+
