@@ -14,6 +14,7 @@ import file_Image2 from "./pages/styles/image2.jpg";
 import file_Image from "./pages/styles/image.jpg";
 import file_4w8jxyi56if41 from "./pages/styles/4w8jxyi56if41.jpg";
 import file_minimalistNatureWnwoego7t9s1kq22 from "./pages/styles/minimalist-nature-wnwoego7t9s1kq22.jpg";
+// import { retrieveGroupById } from './api/groupAPI.js';
 
 
 function App() {
@@ -66,11 +67,12 @@ function App() {
 
   return (
     <UserContext.Provider value={{currentGroup, updateCurrentGroup, currentUser, updateCurrentUser}}>
-      <div style={{backgroundImage: pageBackgroundImage}} className='container'>
+      <div className='container'>
         {(location.pathname != "/login") && <Navbar />}
         <main>
           <Outlet />
         </main>
+        <div style={{backgroundImage: pageBackgroundImage}} id='background-image-div' />
       </div>
     </UserContext.Provider>
   )

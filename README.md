@@ -1,10 +1,15 @@
-Group Calendar Application
+# Group Calendar Application
 
 This is a user-friendly, interactive Group Calendar appliction built with React, TypeScript, Node.js, Express, and PostgreSQL. It allows users to view a monthly calendar, add events, and delete events while storing data in a PostgreSQL database.
 
--------------------------------------------------------------------------------------------------------------------------------
+## Table of Contents
+  [Features](#features)  
+  [Screenshots](#screenshots)  
+  [Installation and Setup](#installation-and-setup)  
+  [License](#license)  
+  [Contact](#contact)  
 
-Features
+## Features
 
 • 📅 Dynamic Calendar: Displays a monthly calendar with the ability to navigate between months and years.
 
@@ -32,7 +37,7 @@ Technologies Used
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-Screenshots
+## Screenshots
 
 Replace with updated image:
 ![image](https://github.com/user-attachments/assets/785304c6-037a-44c8-ba83-3df93dc8bab5)
@@ -40,7 +45,7 @@ Replace with updated image:
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-Installation and Setup
+## Installation and Setup
 
 Prerequisites:
 
@@ -82,11 +87,11 @@ Step 3: Set Up the Database
 
    npm run start
 
-License
+## License
 
 🎀 This project is licensed under the MIT License. See the LICENSE file for details.
 
-Contact
+## Contact
 
 GitHub: KeelerZoroth
 
