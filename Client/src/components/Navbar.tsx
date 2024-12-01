@@ -1,12 +1,12 @@
-
-// import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import '../navbar.css';
 import { Link, useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
+import UserContext from '../components/UserContext';  
 
 const Navbar: React.FC = () => {
+  const { currentGroup } = useContext(UserContext);  
   const navigate = useNavigate();
-
 
   const handleLoginLogout = () => {
     if(auth.loggedIn()){
@@ -18,16 +18,19 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-title">Group Calendar</div>
+      <div className="navbar-title">
+        {/* Display the current group name if it exists, otherwise default to "Group Calendar" */}
+        {currentGroup ? currentGroup.groupName : "Group Calendar"}
+      </div>
       <ul className="navbar-links">
         <Link to="/">
           <li>
             Calendar
           </li>
         </Link> 
-        <Link to="/register">
+        <Link to="/groupinfo">
           <li>
-            Create New User
+            About Group
           </li>
         </Link>
         <Link to="/viewgroups">
@@ -35,9 +38,9 @@ const Navbar: React.FC = () => {
             View Groups
           </li>
         </Link>
-        <Link to="/groupinfo">
+        <Link to="/register">
           <li>
-            Group Info
+            Create New User
           </li>
         </Link>
         <li>
