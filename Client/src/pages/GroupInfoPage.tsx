@@ -6,6 +6,8 @@ import { retrieveAllUsers } from "../api/userAPI";
 import { useNavigate } from "react-router-dom";
 import auth from "../utils/auth";
 import LoggedOutCard from "../components/LoggedOutCard";
+import "../pages/styles/groupinfopage.css";
+import { Send, Slash, User } from 'react-feather'; // Import icons
 
 
 const GroupInfoPage = () => {
@@ -73,86 +75,99 @@ const GroupInfoPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentGroup]);
 
-
-
-
-
-
-
-    const styles: {[key: string]: React.CSSProperties} = {
-        mainDiv: {
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-        },
-        subDiv: {
-            textAlign: 'center',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-        },
-    }
-
-
-
-
     return (
         <>
         {auth.loggedIn() ?
-        <div style={styles.mainDiv}>
-            {currentGroup?.hostUser?.id === currentUser.id && (<div style={styles.subDiv}>
-                <div>
-                    <input 
-                    type='text'
-                    name='usernameInvitee'
-                    value={inputData.usernameInvitee || ''}
-                    onChange={handleInputChange}
-                    />
-                    <button onClick={
-                        () => {
-                            inviteUser(inputData.usernameInvitee)
-                        }
-                    }>Invite User</button>
-                    <p>{inviteAlert}</p>
-                </div>
 
-                <button onClick={
-                    () => {
-                        deleteCurrentGroup()
+
+        // Page Stylizing //
+        
+    <div className="group-info-container">
+    <h4>About Group</h4>
+    {currentGroup ? (
+        <>
+            <div className="group-info-card">
+                <h3>Host: {currentGroup?.hostUser?.username}</h3>
+
+                {groupUsers.map((nextUser, indexKey) => {
+                    if (nextUser.username !== currentGroup?.hostUser?.username) {
+                        return (
+                            <div key={indexKey} className="group-info-user-row">  
+                                <User className="group-info-user-icon" />  {/* Add the User icon here */}
+                                <p className="group-info-user-name">{nextUser.username}</p>  
+                                {currentGroup?.hostUser?.id === currentUser.id && (
+                                    <button 
+                                        className="group-info-remove-button" 
+                                        onClick={() => {
+                                            kickUser(currentGroup.id!, nextUser.id!);
+                                        }}
+                                    >
+                                        Remove <Slash className="group-info-send-icon" />
+                                    </button>
+                                )}
+                            </div>
+                        );
+                    } else {
+                        return null;  
                     }
-                }>Delete Group</button>
-            </div>)}
-            
-            <h2>Group Info</h2>
-            {currentGroup ? 
-            (
-                <>
-                {currentUser.username !== currentGroup?.hostUser?.username && (<button onClick={() => {
-                    kickUser(currentGroup.id!, currentUser.id!);
-                    updateCurrentGroup(null);
-                    navigate("/viewgroups");
-                }}>Leave Group</button>)}
-                <div>
-                    <h3>Host: {currentGroup?.hostUser?.username}</h3>
-                    {groupUsers.map((nextUser, indexKey) => {
-                        if(nextUser.username !== currentGroup?.hostUser?.username){
-                            return (
-                                <div key={indexKey}>
-                                    <p>{nextUser.username}</p>
-                                    {currentGroup?.hostUser?.id === currentUser.id && (<button onClick={() => {
-                                        kickUser(currentGroup.id!, nextUser.id!);
-                                    }}>Remove User</button>)}
-                                </div>
-                            )
-                        } else {
-                            return
-                        }
-                    })}
+                })}
+            </div>
+
+            {currentGroup?.hostUser?.id === currentUser.id && (
+                <div className="group-info-section">
+                    <div className="group-info-input-container">
+                        <input
+                            className="group-info-input"
+                            type="text"
+                            name="usernameInvitee"
+                            value={inputData.usernameInvitee || ""}
+                            onChange={handleInputChange}
+                            placeholder="Username"
+                        />
+                        <button 
+                            className="group-info-invite-button" 
+                            onClick={() => {
+                                inviteUser(inputData.usernameInvitee);
+                            }}
+                        >
+                            Invite <Send className="group-info-send-icon" /> {/* Add the icon here */}
+                        </button>
+                    </div>
+                    <p className="group-info-invite-alert">{inviteAlert}</p>
                 </div>
-                </>) 
-            : (<p>You have no group selected.</p>)}
-        </div>
+            )}
+
+            {currentGroup?.hostUser?.id === currentUser.id && (
+                <button 
+                    className="group-info-delete-button" 
+                    onClick={() => deleteCurrentGroup()}
+                >
+                    Delete Group
+                </button>
+            )}
+
+                {currentUser.username !== currentGroup?.hostUser?.username && (
+                    <button 
+                        className="group-info-leave-button" 
+                        onClick={() => {
+                            kickUser(currentGroup.id!, currentUser.id!);
+                            updateCurrentGroup(null);
+                            navigate("/viewgroups");
+                        }}
+                    >
+                        Leave Group
+                    </button>
+                )}
+            </>
+        ) : (
+            <p>You have no group selected.</p>
+        )}
+    </div>
+
+// End of Page Stylizing //
+
+
+
         :
         <LoggedOutCard/>
         }

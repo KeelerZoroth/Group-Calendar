@@ -3,6 +3,7 @@ import UserContext from '../components/UserContext';
 import { retrieveGroupDays } from '../api/groupAPI';
 import LoggedOutCard from '../components/LoggedOutCard.js';
 import Auth from "../utils/auth.js";
+import '../calendar.css';
 
 import CommentCard from '../components/CommentCard.js';
 

@@ -12,8 +12,9 @@ import { retrieveAllUsers } from './api/userAPI.js';
 //imported images
 import file_Image2 from "./pages/styles/image2.jpg";
 import file_Image from "./pages/styles/image.jpg";
-import file_4w8jxyi56if41 from "./pages/styles/4w8jxyi56if41.jpg";
-import file_minimalistNatureWnwoego7t9s1kq22 from "./pages/styles/minimalist-nature-wnwoego7t9s1kq22.jpg";
+import file_Image4 from "./pages/styles/image4.jpg";
+import file_Image3 from "./pages/styles/image3.jpg";
+import file_Image5 from "./pages/styles/image5.jpg";
 // import { retrieveGroupById } from './api/groupAPI.js';
 
 
@@ -53,13 +54,16 @@ function App() {
         setPageBackgroundImage(`url(${file_Image2})`);
       break;
       case "/viewgroups":
-        setPageBackgroundImage(`url(${file_4w8jxyi56if41})`);
+        setPageBackgroundImage(`url(${file_Image4})`);
       break;
       case "/groupinfo":
-        setPageBackgroundImage(`url(${file_4w8jxyi56if41})`);
+        setPageBackgroundImage(`url(${file_Image4})`);
+      break;
+      case "/modifydate":
+        setPageBackgroundImage(`url(${file_Image5})`);
       break;
       default:
-        setPageBackgroundImage(`url(${file_minimalistNatureWnwoego7t9s1kq22})`);
+        setPageBackgroundImage(`url(${file_Image3})`);
       break;
     }
   }, [location.pathname])

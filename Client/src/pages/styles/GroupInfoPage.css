@@ -1,0 +1,230 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Main container */
+  .group-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 2rem auto;
+    width: 100%;
+    text-align: center;
+    border: 2px solid white;
+  }
+  
+  .group-info-container h2, .group-info-container h4 {
+    color: black;
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  /* Input container */
+  .group-info-input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .group-info-input-container input {
+    flex-grow: 1;
+    padding: 0.8rem;
+    margin-right: 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: black;
+    font-size: 1rem;
+  }
+  
+  .group-info-input-container input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Buttons */
+  .group-info-button {
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border: none;
+    text-align: center;
+  }
+  
+  .group-info-invite-button {
+    background-color: black;
+    color: white;
+    white-space: nowrap;
+  }
+  
+  .group-info-invite-button:hover,
+  .group-info-leave-button:hover,
+  .group-info-remove-button:hover,
+  .group-info-delete-button:hover {
+    background-color: #5c4b51;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+  }
+  
+  .group-info-leave-button,
+  .group-info-remove-button,
+  .group-info-delete-button {
+    background-color: black;
+    color: white;
+    margin-top: 1rem;
+  }
+  
+  .group-info-leave-button {
+    margin-top: 1rem;
+  }
+  
+  .group-info-remove-button {
+    margin-left: 5rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Icon styles */
+  .group-info-send-icon {
+    font-size: 0.5rem;
+    color: white;
+    vertical-align: middle;
+    padding-left: 0.2rem;
+  }
+  
+  .group-info-user-icon {
+    font-size: 1.2rem;
+    color: white;
+    margin-right: 0.2rem;
+  }
+  
+  /* Group sections */
+  .group-info-section {
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-top: 1.5rem;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid white;
+  }
+  
+  .group-info-section h3 {
+    color: #ffffff;
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7);
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Group card */
+  .group-info-card {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    margin: 10px 0;
+    margin-top: 0.5rem;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    color: white;
+  }
+  
+  .group-info-card h3 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+  }
+  
+  /* User row */
+  .group-info-user-row {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; /* This will center the items vertically */
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+  }
+  
+  .group-info-user-name {
+    color: white;
+    font-size: 1rem;
+    margin-left: 0.2rem;
+    margin-right: auto; 
+  }
+  
+  /* Invite alert */
+  .group-info-invite-alert {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-align: left;
+    width: 100%;
+    padding-left: 0.5rem;
+  }
+  
+  
+  /* Media Queries */
+  @media (max-width: 768px) {
+    .group-info-container {
+        padding: 1.5rem;
+    }
+  
+    .group-info-container h2, .group-info-container h4 {
+        font-size: 1.6rem;
+    }
+  
+    .group-info-input-container input {
+        padding: 0.7rem;
+    }
+  
+    .group-info-button {
+        padding: 0.7rem;
+    }
+  
+    .group-info-section h3 {
+        font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .group-info-container {
+        padding: 1rem;
+    }
+  
+    .group-info-container h2, .group-info-container h4 {
+        font-size: 1.3rem;
+    }
+  
+    .group-info-input-container input {
+        padding: 0.6rem;
+        font-size: 0.85rem;
+    }
+  
+    .group-info-button {
+        padding: 0.6rem;
+    }
+  
+    .group-info-section h3 {
+        font-size: 1rem;
+    }
+  }
