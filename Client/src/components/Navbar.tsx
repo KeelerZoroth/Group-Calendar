@@ -11,9 +11,8 @@ const Navbar: React.FC = () => {
   const handleLoginLogout = () => {
     if(auth.loggedIn()){
       auth.logout();
-    } else {
-      navigate("/login");
     }
+    navigate("/login");
   };
 
   return (
