@@ -12,7 +12,8 @@
     justify-content: center;
     max-width: 300px;
     margin-left: auto;
-    margin-right: auto;
+    margin-right: auto; 
+    word-break: break-all;
 }
 
 .group-card-info-main {
