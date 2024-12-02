@@ -6,7 +6,7 @@ import UserContext from "../components/UserContext";
 import { createGroup } from "../api/groupAPI";
 import auth from "../utils/auth";
 import LoggedOutCard from "../components/LoggedOutCard";
-import "../pages/styles/viewgroups.css";
+import "../pages/styles/ViewGroups.css";
 import { PlusCircle } from 'react-feather'; // Import icons
 
 

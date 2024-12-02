@@ -1,9 +1,4 @@
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+
   
   /* comment card container */
   .date-info-comment-card-container {
@@ -12,6 +7,7 @@
     justify-content: space-between;
     width: 100%;
     margin-bottom: 1rem;
+    word-break: break-all;
   }
 
   .date-info-comment-card-container:hover .date-info-comment-card {
@@ -35,6 +31,7 @@
   
   .date-info-comment-card span.creating-user {
     display: block;
+    opacity: 50%;
     margin-top: 0.5rem;
     font-size: 0.9rem;
     color: black;

@@ -15,23 +15,22 @@ const Calendar: React.FC = () => {
   const today = new Date();
   const [currentMonth, setCurrentMonth] = useState(today.getMonth());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [numOfComments, setNumOfComments] = useState<{[key: string]: number}>({});
   const { currentGroup, currentUser } = useContext(UserContext);
   
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [dateComments, setDateComments] = useState<CommentData[]>([]);
+  const [monthComments, setMonthComments] = useState<{[key: string]: CommentData[]}>({});
   const [commentInputContent, setCommentInputContent] = useState<string>('')
 
 
 
-  const updateDateComments = async () => {
+  const updateMonthComments = async () => {
     try {
-      if(currentGroup && selectedDate){
+      if(currentGroup){
         const response = await retrieveGroupDays(currentGroup.id as number, {year: currentYear, month: currentMonth + 1});
-        if(response[selectedDate]){
-          setDateComments(response[selectedDate]);
+        if(response){
+          setMonthComments(response);
         } else {
-          setDateComments([]);
+          setMonthComments({});
         }
       }
     } catch (error) {
@@ -41,39 +40,17 @@ const Calendar: React.FC = () => {
 
   const createNewComment = async ({content, calendarDay, calendarMonth, calendarYear, groupId, createdByUserId}: {content: string, calendarDay: number, calendarMonth: number, calendarYear: number, groupId: number, createdByUserId: number}) => {
     console.log(await createComment({content, calendarDay, calendarMonth, calendarYear, groupId, createdByUserId}))
-    updateDateComments()
+    updateMonthComments()
   };
 
 
   const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   useEffect(() => {
-    fetchNumOfComments();
+    updateMonthComments();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentGroup, dateComments]);
+  }, [currentMonth])
 
-
-  useEffect(() => {
-    updateDateComments();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate])
-
-
-  const blankDays: {[key: string]: number} = {};
-
-  const fetchNumOfComments = async () => {
-    try {
-      if(currentGroup){
-        const response = await retrieveGroupDays(currentGroup.id as number);
-        Object.keys(response).forEach((dateKey) => {
-          blankDays[dateKey] = response[dateKey].length
-        });
-      }
-      setNumOfComments(blankDays);
-    } catch (error) {
-      console.error('Error gathering comments:', error);
-    }
-  };
 
 
   const renderDaysOfWeek = () => {
@@ -108,9 +85,9 @@ const Calendar: React.FC = () => {
           }} className="calendar-cell" key={`day-${dayCounter}`}>
 
             <span className="date">{dayCounter}</span>
-            {numOfComments[date] && 
+            {monthComments[date] && 
                 <div className="events">
-                  {`${numOfComments[date]}`}
+                  {`${monthComments[date].length}`}
                 </div>
             }
           </div>
@@ -175,10 +152,10 @@ const Calendar: React.FC = () => {
       <div>
 
 
-            {
-            dateComments.map((nextComment, keyIndex) => {
+            {(selectedDate && monthComments[selectedDate]) &&
+            monthComments[selectedDate].map((nextComment, keyIndex) => {
               return (
-                <CommentCard comment={nextComment} updateCommentsFunc={updateDateComments} key={keyIndex}/>
+                <CommentCard comment={nextComment} updateCommentsFunc={updateMonthComments} key={keyIndex}/>
                 )
             })}
         </div>

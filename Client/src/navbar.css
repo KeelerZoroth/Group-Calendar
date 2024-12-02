@@ -16,7 +16,8 @@
   font-weight: bold;
   letter-spacing: 1px;
   color: #ffffff;
-  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7);
+  text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7); 
+  word-break: break-all;
 }
 
 /* Navbar links container */
@@ -92,9 +93,10 @@
     font-size: 24px; 
   }
 
-  .navbar-links {
-    display: none;
-  }
+
+  /* .navbar-links {
+    /* display: none; 
+  } */
 
   .navbar-button {
     font-size: 14px; 

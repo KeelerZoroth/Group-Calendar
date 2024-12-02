@@ -80,6 +80,7 @@ button:focus {
 }
 
 .calendar-cell {
+  position: relative;
   padding: 1rem;
   text-align: center;
   background-color: #ffffff;
@@ -87,6 +88,7 @@ button:focus {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   transition: background-color 0.3s ease;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .calendar-cell:hover {
@@ -99,8 +101,13 @@ button:focus {
 }
 
 .events {
-  margin-top: 5px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background-color: cyan;
+  padding: 0px 4px;
   color: black;
+  border-radius: 5px 0px 0px 0px;
 }
 
 .calendar-cell:hover .events {
@@ -284,8 +291,6 @@ button:focus {
   
     /* Adjust the calendar grid for smaller screens */
     .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr); /* Reduce number of columns on mobile */
       gap: 5px;
     }
   
@@ -297,10 +302,6 @@ button:focus {
     .calendar-cell:hover {
       background-color: #aa4065;
       border-color: #aa4065;
-    }
-  
-    .days-of-week {
-      grid-template-columns: repeat(5, 1fr); /* Use fewer columns for better mobile display */
     }
   
     .day-label {
@@ -367,7 +368,6 @@ button:focus {
     }
   
     .calendar-grid {
-      grid-template-columns: repeat(4, 1fr); /* Reduce grid columns further */
       gap: 4px;
     }
   

@@ -1,9 +1,4 @@
-/* General reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+
   
   /* Main container */
   .group-info-container {
@@ -117,7 +112,7 @@
   }
   
   .group-info-remove-button {
-    margin-left: 5rem;
+    margin-left: 5rem !important;
     margin-bottom: 1rem;
   }
   

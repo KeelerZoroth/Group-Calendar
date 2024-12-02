@@ -15,7 +15,6 @@ import file_Image from "./pages/styles/image.jpg";
 import file_Image4 from "./pages/styles/image4.jpg";
 import file_Image3 from "./pages/styles/image3.jpg";
 import file_Image5 from "./pages/styles/image5.jpg";
-// import { retrieveGroupById } from './api/groupAPI.js';
 
 
 function App() {
@@ -38,7 +37,6 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      // updateCurrentGroup(await retrieveGroupById(1));
       updateCurrentUser()
     })()
   }, []);
