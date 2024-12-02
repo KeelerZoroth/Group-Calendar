@@ -6,7 +6,7 @@ import { retrieveAllUsers } from "../api/userAPI";
 import { useNavigate } from "react-router-dom";
 import auth from "../utils/auth";
 import LoggedOutCard from "../components/LoggedOutCard";
-import "../pages/styles/groupinfopage.css";
+import "../pages/styles/GroupInfoPage.css";
 import { Send, Slash, User } from 'react-feather'; // Import icons
 
 
