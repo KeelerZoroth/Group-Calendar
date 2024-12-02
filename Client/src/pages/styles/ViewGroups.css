@@ -25,7 +25,7 @@
 
 .view-groups-main-container h2 {
     color: black;
-    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7);
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
     margin-bottom: 1rem;
     font-size: 2rem;
     font-weight: bold;
@@ -67,23 +67,26 @@
     color: white;
 }
 
-.view-groups-create-group-button:hover {
-    background-color: #5c4b51;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
 .view-groups-select-button {
     background-color: black;
     color: white;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+    transition: transform 0.3s ease-in-out; 
+}
+
+.view-groups-create-group-button:hover {
+    background-color: #aa4065;
+    border-color: #aa4065;
+    animation: pulse 1.5s infinite ease-in-out; /* Pulse every 1.5 seconds */
 }
 
 .view-groups-select-button:hover {
-    background-color: #5c4b51;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    color: white;
+    background-color: #aa4065;
+    border-color: #aa4065;
+    transform: scale(1.1); /* slight grow */
 }
+
 
 /* Group sections */
 .view-groups-section-create, .view-groups-section {
@@ -117,40 +120,94 @@
     color: white;
 }
 
+@keyframes pulse {
+    0% {
+        transform: scale(1); /* Normal size */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Light shadow */
+    }
+    50% {
+        transform: scale(1.1); /* Slightly enlarged */
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.4); /* Stronger shadow */
+    }
+    100% {
+        transform: scale(1); /* Back to normal size */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Light shadow */
+    }
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
     .view-groups-main-container {
-        padding: 1.5rem;
+        padding: 1.2rem;
+        max-width: 500px;
     }
 
-    .view-groups-section h2 {
-        font-size: 1.2rem;
+    .view-groups-section h3 {
+        font-size: 1.3rem;
     }
 
     .view-groups-input-container input {
+        width: 70%;
         padding: 0.7rem;
     }
 
-    .view-groups-button {
+    .view-groups-create-group-button {
+        padding: 0.7rem 1.2rem;
+    }
+
+    .view-groups-select-button {
         padding: 0.7rem;
+    }
+
+    .view-groups-card {
+        margin: 1rem 0;
+        padding: 12px;
     }
 }
 
 @media (max-width: 480px) {
     .view-groups-main-container {
         padding: 1rem;
+        max-width: 100%;
     }
 
-    .view-groups-section h2 {
-        font-size: 1.1rem;
+    .view-groups-main-container h2 {
+        font-size: 1.3rem;
+    }
+
+    .view-groups-section h3 {
+        font-size: 1.2rem;
+    }
+
+    .view-groups-section-create h3 {
+        font-size: 1.2rem;
+    }
+
+    .view-groups-input-container {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .view-groups-input-container input {
+        width: 100%;
         padding: 0.6rem;
         font-size: 0.85rem;
+        margin-right: 0;
+        margin-bottom: 1rem;
     }
 
-    .view-groups-button {
-        padding: 0.6rem;
+    .view-groups-create-group-button {
+        width: 100%;
+        padding: 0.8rem 1.2rem;
+    }
+
+    .view-groups-select-button {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    .view-groups-card {
+        padding: 10px;
+        margin-top: 1rem;
     }
 }

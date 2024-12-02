@@ -25,7 +25,7 @@
   
   .group-info-container h2, .group-info-container h4 {
     color: black;
-    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.7);
+    text-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
     margin-bottom: 1rem;
     font-size: 2rem;
     font-weight: bold;
@@ -58,6 +58,7 @@
   }
   
   /* Buttons */
+
   .group-info-button {
     padding: 0.7rem 1rem;
     border-radius: 12px;
@@ -75,13 +76,30 @@
     white-space: nowrap;
   }
   
-  .group-info-invite-button:hover,
-  .group-info-leave-button:hover,
-  .group-info-remove-button:hover,
-  .group-info-delete-button:hover {
-    background-color: #5c4b51;
+  .group-info-invite-button:hover {
+    background-color: #aa4065;
+    border-color: #aa4065;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     color: white;
+    animation: pulse 1.5s infinite ease-in-out; /* Pulse every 1.5 seconds */
+  }
+
+  .group-info-leave-button:hover,
+  .group-info-remove-button:hover {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+    background-color: #aa4065;
+    border-color: #aa4065;
+    transform: scale(0.85); /* Slight shrink */
+ 
+  }
+
+  .group-info-delete-button:hover {
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    color: white;
+    background-color: #aa4065;
+    border-color: #aa4065;
+    transform: scale(1.1); /* Slight grow */
   }
   
   .group-info-leave-button,
@@ -90,6 +108,8 @@
     background-color: black;
     color: white;
     margin-top: 1rem;
+    transition: transform 0.3s ease-in-out; 
+    
   }
   
   .group-info-leave-button {
@@ -181,50 +201,86 @@
     width: 100%;
     padding-left: 0.5rem;
   }
-  
-  
-  /* Media Queries */
-  @media (max-width: 768px) {
-    .group-info-container {
-        padding: 1.5rem;
+
+  @keyframes pulse {
+    0% {
+        transform: scale(1); /* Normal size */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Light shadow */
     }
-  
-    .group-info-container h2, .group-info-container h4 {
-        font-size: 1.6rem;
+    50% {
+        transform: scale(1.1); /* Slightly enlarged */
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.4); /* Stronger shadow */
     }
-  
-    .group-info-input-container input {
-        padding: 0.7rem;
+    100% {
+        transform: scale(1); /* Back to normal size */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Light shadow */
     }
+}
   
-    .group-info-button {
-        padding: 0.7rem;
-    }
   
-    .group-info-section h3 {
-        font-size: 1.2rem;
-    }
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .group-info-container {
+    padding: 1rem; /* Adjust padding for smaller screens */
   }
-  
-  @media (max-width: 480px) {
-    .group-info-container {
-        padding: 1rem;
-    }
-  
-    .group-info-container h2, .group-info-container h4 {
-        font-size: 1.3rem;
-    }
-  
-    .group-info-input-container input {
-        padding: 0.6rem;
-        font-size: 0.85rem;
-    }
-  
-    .group-info-button {
-        padding: 0.6rem;
-    }
-  
-    .group-info-section h3 {
-        font-size: 1rem;
-    }
+
+  .group-info-container h2,
+  .group-info-container h4 {
+    font-size: 1.6rem;
   }
+
+  .group-info-input-container {
+    flex-direction: column; /* Stack input and button vertically */
+    align-items: stretch;
+  }
+
+  .group-info-input-container input {
+    padding: 0.7rem;
+    margin-right: 0; /* Remove margin on smaller screens */
+    margin-bottom: 1rem; /* Add space between input and button */
+  }
+
+  .group-info-button {
+    padding: 0.7rem;
+    width: 100%; /* Make button full width */
+  }
+
+  .group-info-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .group-info-remove-button {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .group-info-container {
+    padding: 1rem;
+  }
+
+  .group-info-container h2,
+  .group-info-container h4 {
+    font-size: 1.3rem;
+  }
+
+  .group-info-input-container input {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .group-info-button {
+    padding: 0.6rem;
+    width: 100%;
+  }
+
+  .group-info-section h3 {
+    font-size: 1rem;
+  }
+
+  .group-info-card h3 {
+    font-size: 1.2rem; /* Adjust font size for smaller screens */
+  }
+}

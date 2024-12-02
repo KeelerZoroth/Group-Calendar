@@ -1,5 +1,7 @@
 import { deleteComment } from "../api/commentAPI"
 import { CommentData } from "../interfaces/CommentData"
+import "../pages/styles/CommentCard.css"
+import {Slash} from 'react-feather'; // Import icons
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,7 +18,7 @@ const CommentCard = (props: { comment: CommentData, updateCommentsFunc: () => Pr
                     deleteComment(props.comment.id as number);
                     props.updateCommentsFunc();
                 }
-            }>X</button>
+            }>Remove <Slash className="date-info-icon" /></button>
         </div>
     )
 }

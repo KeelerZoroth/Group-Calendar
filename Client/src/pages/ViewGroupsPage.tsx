@@ -79,7 +79,7 @@ const ViewGroupsPage = () => {
         <div className="view-groups-section">
             <h3>Switch Group</h3>
             {userGroups.map((nextGroup, indexKey) => (
-                <div className="view-groups-group-card-view" key={indexKey}>
+                <div className="view-groups-card" key={indexKey}>
                     <GroupCard group={nextGroup} /> 
                     <button onClick={() => updateCurrentGroup(nextGroup)} className="view-groups-select-button">Select</button>
                 </div>
