@@ -3,7 +3,8 @@ import UserContext from '../components/UserContext';
 import { retrieveGroupDays } from '../api/groupAPI';
 import LoggedOutCard from '../components/LoggedOutCard.js';
 import Auth from "../utils/auth.js";
-import '../calendar.css';
+import '../navbar.css';
+import { PlusCircle, ArrowLeft, ArrowRight } from 'react-feather'; // Import icons
 
 import CommentCard from '../components/CommentCard.js';
 
@@ -124,29 +125,37 @@ const Calendar: React.FC = () => {
   const renderDateInfo = () => {
 
     return (
-      <div className='date-info-container'>
-        <button className='date-info-back-btn' onClick={() => {
-            setSelectedDate(null)
-          }}>
-          {"< Back"}
+
+    //New Event Stylizing
+      <div className='event-form'>
+        <div className="event-form-header">
+
+        
+        <button className='event-form-back-button' onClick={() => {
+          setSelectedDate(null);
+        }}>
+          <ArrowLeft className="event-form-back-icon" />
+          Back
         </button>
-        <div className="date-info-header">
+       
+       
           <h2>
             {`${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} 
             ${parseInt(selectedDate?.split('-')[2] as string)},
             ${currentYear}`}
           </h2>
+
         </div>
-        <div  className="date-info-create-comment">
+        <div  className="event-form-input-container">
           <input
               type="text"
               id="comment"
               value={commentInputContent}
               onChange={(e) => setCommentInputContent(e.target.value)}
-              placeholder="New Comment"
+              placeholder="New Event"
               required
           />
-          <button onClick={
+          <button className='event-form-create-button' onClick={
             () => {
               const newCommentData = {
                 content: commentInputContent,
@@ -159,10 +168,13 @@ const Calendar: React.FC = () => {
               createNewComment(newCommentData);
               setCommentInputContent('');
           }}>
-            Create
+            Add Event <PlusCircle className="event-form-plus-icon" /> {/* Add the icon here */}
           </button>
         </div>
-        <div>
+
+      <div>
+
+
             {
             dateComments.map((nextComment, keyIndex) => {
               return (
@@ -198,7 +210,7 @@ const Calendar: React.FC = () => {
                 setCurrentMonth(currentMonth - 1);
               }
             }}>
-            &lt;
+            <ArrowLeft className="event-form-arrows-icon" />
           </button>
           <h2>
             {new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} {currentYear}
@@ -212,7 +224,7 @@ const Calendar: React.FC = () => {
                 setCurrentMonth(currentMonth + 1);
               }
             }}>
-            &gt;
+            <ArrowRight className="event-form-arrows-icon" />
           </button>
 
           </div>

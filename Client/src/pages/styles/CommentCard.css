@@ -1,0 +1,95 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* comment card container */
+  .date-info-comment-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .date-info-comment-card-container:hover .date-info-comment-card {
+    border-color: #aa4065;
+    transition: border-color 0.3s ease-in-out; /* Smooth transition */
+}
+  
+  /* comment card styling */
+  .date-info-comment-card {
+    background-color: rgba(255, 255, 255, 0.2); /* transparent background */
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: left;
+    backdrop-filter: blur(5px); /* blur effect */
+    border: 2px solid white;
+    color: black;
+  }
+  
+  .date-info-comment-card span.creating-user {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: black;
+  }
+  
+  /* delete button styling */
+  .date-info-comment-delete-btn {
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border: none;
+    text-align: center;
+    background-color: black;
+    color: white;
+    white-space: nowrap;
+    margin-left: 1rem;
+    transition: transform 0.3s ease-in-out; 
+
+  }
+  
+  .date-info-comment-delete-btn:hover {
+    transform: scale(0.85); /* Slight shrink */
+    background-color: #aa4065;
+    border-color: #aa4065;
+  }
+
+  .date-info-icon {
+    font-size: 0.5rem;
+    color: white;
+    vertical-align: middle;
+    padding-left: 0.2rem;
+  }
+  
+  /* Mobile view styles */
+  @media (max-width: 768px) {
+    .date-info-comment-card {
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+  
+    .date-info-comment-delete-btn {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .date-info-comment-card {
+      padding: 0.8rem;
+    }
+  
+    .date-info-comment-delete-btn {
+      font-size: 0.9rem;
+    }
+  }
+  
