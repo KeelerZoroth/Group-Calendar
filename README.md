@@ -4,7 +4,8 @@ This is a user-friendly, interactive Group Calendar appliction built with React,
 
 ## Table of Contents
   [Features](#features)  
-  [Screenshots](#screenshots)  
+  [Screenshots](#screenshots) 
+  [Live Site](#Live-Site)
   [Installation and Setup](#installation-and-setup)  
   [License](#license)  
   [Contact](#contact)  
@@ -39,9 +40,17 @@ Technologies Used
 
 ## Screenshots
 
-Replace with updated image:
-![image](https://github.com/user-attachments/assets/785304c6-037a-44c8-ba83-3df93dc8bab5)
+Calendar:
 
+![image](https://github.com/user-attachments/assets/ce899cbb-93b4-4dae-b85e-9095380f1d37)
+
+Create Event Screen:
+
+![image](https://github.com/user-attachments/assets/984d685d-b377-4bc3-a075-f68fc41f8373)
+
+## Live-Site
+
+https://group-calendar-a5hu.onrender.com/
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -83,9 +92,15 @@ Step 3: Set Up the Database
 
    npm run server
 
-4. Run the Frontend
+4. Run the Frontend:
 
    npm run start
+
+5. Login:
+
+   Username: RadiantComet
+
+   Password: password
 
 ## License
 
