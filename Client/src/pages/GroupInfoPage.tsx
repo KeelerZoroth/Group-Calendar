@@ -54,7 +54,7 @@ const GroupInfoPage = () => {
 
     const inviteUser = async(nameOfUser: string) => {
         const foundUser = await retrieveAllUsers(nameOfUser);
-        if(foundUser.length > 0) {
+        if(foundUser.length > 0 && inputData.usernameInvitee) {
             const apiResponce = await addUserToGroup(currentGroup?.id as number, foundUser[0].id as number);
             if(typeof apiResponce === "string" ){
                 setInviteAlert("User Invited");
