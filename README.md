@@ -4,8 +4,8 @@ This is a user-friendly, interactive Group Calendar appliction built with React,
 
 ## Table of Contents
   [Features](#features)  
-  [Screenshots](#screenshots) 
-  [Live Site](#Live-Site)
+  [Screenshots](#screenshots)  
+  [Live Site](#Live-Site)  
   [Installation and Setup](#installation-and-setup)  
   [License](#license)  
   [Contact](#contact)  
